@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domy na wynajem</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .hero {
+            background:
+                linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
+                url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80")
+                center/cover;
+
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 30px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            gap: 10px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .search-box input,
+        .search-box select,
+        .search-box button {
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .search-box button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            background: #1d4ed8;
+        }
+
+        .container {
+            width: 84%;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .houses {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .house {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+            transition: .3s;
+        }
+
+        .house:hover {
+            transform: translateY(-5px);
+        }
+
+        .house img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .house-content {
+            padding: 20px;
+        }
+
+        .house h3 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .location {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+            margin-bottom: 18px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .houses {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .hero h2 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .houses {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏠 DomRent</h1>
+
+    <nav>
+        <a href="#oferty">Oferty</a>
+        <a href="#kontakt">Kontakt</a>
+    </nav>
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h2>Znajdź swój wymarzony dom</h2>
+
+        <p>
+            Wynajmij dom w najlepszej lokalizacji
+        </p>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="location"
+                placeholder="Np. Katowice"
+            >
+
+            <select id="rooms">
+                <option value="">Liczba pokoi</option>
+                <option value="2">2 pokoje</option>
+                <option value="3">3 pokoje</option>
+                <option value="4">4 pokoje</option>
+                <option value="5">5+ pokoi</option>
+            </select>
+
+            <button onclick="searchHouses()">
+                Szukaj
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<main class="container" id="oferty">
+
+    <div class="section-title">
+
+        <h2>Najpopularniejsze oferty</h2>
+
+        <p>
+            Wybierz dom dopasowany do swoich potrzeb
+        </p>
+
+    </div>
+
+
+    <div class="houses" id="houses">
+
+        <article
+            class="house"
+            data-location="katowice"
+            data-rooms="3"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80"
+                alt="Dom w Katowicach"
+            >
+
+            <div class="house-content">
+
+                <h3>Nowoczesny dom z ogrodem</h3>
+
+                <p class="location">
+                    📍 Katowice, Śląskie
+                </p>
+
+                <div class="details">
+                    <span>🛏 3 pokoje</span>
+                    <span>📐 120 m²</span>
+                </div>
+
+                <div class="price">
+                    4 500 zł / miesiąc
+                </div>
+
+                <a href="#" class="button">
+                    Zobacz ofertę
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="house"
+            data-location="krakow"
+            data-rooms="4"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80"
+                alt="Dom w Krakowie"
+            >
+
+            <div class="house-content">
+
+                <h3>Duży dom dla rodziny</h3>
+
+                <p class="location">
+                    📍 Kraków, Małopolskie
+                </p>
+
+                <div class="details">
+                    <span>🛏 4 pokoje</span>
+                    <span>📐 180 m²</span>
+                </div>
+
+                <div class="price">
+                    6 200 zł / miesiąc
+                </div>
+
+                <a href="#" class="button">
+                    Zobacz ofertę
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="house"
+            data-location="wroclaw"
+            data-rooms="2"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80"
+                alt="Dom we Wrocławiu"
+            >
+
+            <div class="house-content">
+
+                <h3>Przytulny dom pod miastem</h3>
+
+                <p class="location">
+                    📍 Wrocław, Dolnośląskie
+                </p>
+
+                <div class="details">
+                    <span>🛏 2 pokoje</span>
+                    <span>📐 90 m²</span>
+                </div>
+
+                <div class="price">
+                    3 200 zł / miesiąc
+                </div>
+
+                <a href="#" class="button">
+                    Zobacz ofertę
+                </a>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</main>
+
+
+<footer id="kontakt">
+
+    <p>© 2026 DomRent — Wynajem domów</p>
+
+    <p>
+        Kontakt: kontakt@domrent.pl
+    </p>
+
+</footer>
+
+
+<script>
+
+function searchHouses() {
+
+    const location =
+        document
+        .getElementById("location")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const rooms =
+        document
+        .getElementById("rooms")
+        .value;
+
+    const houses =
+        document.querySelectorAll(".house");
+
+    houses.forEach(house => {
+
+        const houseLocation =
+            house.dataset.location;
+
+        const houseRooms =
+            house.dataset.rooms;
+
+        const locationMatch =
+            !location ||
+            houseLocation.includes(location);
+
+        const roomsMatch =
+            !rooms ||
+            houseRooms === rooms;
+
+        if (locationMatch && roomsMatch) {
+
+            house.style.display = "block";
+
+        } else {
+
+            house.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
